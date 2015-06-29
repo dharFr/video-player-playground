@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sample player</title>
+  <!-- live-reload script -->
+  <script src="//localhost:8001"></script>
+  <style type='text/css'>
+    .video    { width: 480px; }
+    .controls { width: 480px; }
+    .seekbar  { width: 300px; }
+    .btn      {
+      height: 20px;
+      border-radius: 2px;
+      border: 1px solid gray;
+      background: whitesmoke;
+    }
+    .playback-btn {
+      width: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Sample player</h2>
+  <div id="root">
+    <div class="video-container">
+      <video id="video" class="video" poster="http://62.210.195.3/dm/macklemore/55008890_poster.jpg">
+        <source src="http://media.sublimevideo.net/v/dm/55008890_mp4_h264_aac_hd.mp4">
+      </video>
+    </div>
+    <div class="controls">
+      <button id="playback-btn" class="btn playback-btn">▶︎</button>
+      <span id="timeinfo">
+        <span class="time"></span>
+        <input id="seekbar" class="seekbar" type="range" min="0">
+        <span class="duration"></span>
+      </span>
+    </div>
+    <div id="info" class="info"></div>
+  </div>
+  <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="dist/bundle.js" charset="utf-8"></script>
+</body>
+</html>
