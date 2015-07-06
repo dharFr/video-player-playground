@@ -1,8 +1,26 @@
 'use strict';
 
 import flight from 'flight';
+import withState from 'with-state';
 
 function Seekbar() {
+
+  // Define an instance's `initialState`
+  this.initialState({
+    duration : 0,
+    time     : 0
+  });
+
+  this.update = function() {
+
+    if (this.$node.attr('max') !== this.state.duration) {
+      this.$node.attr('max', this.state.duration);
+    }
+
+    if (this.$node.val() !== this.state.time){
+      this.$node.val(this.state.time);
+    }
+  };
 
   this.bindVideoEvents = function() {
     this.on('#root', 'video_duration_change', this.onDurationChange);
@@ -15,15 +33,22 @@ function Seekbar() {
   };
 
   this.onDurationChange = function(e, data) {
-      this.$node.attr('max', data.duration);
-      this.$node.val(0);
+    this.mergeState({
+      duration : data.duration,
+      time     : 0
+    });
   };
 
   this.onTimeUpdate = function(e, data) {
-    this.$node.val(data.time);
+    this.mergeState({
+      time     : data.time
+    });
   };
 
   this.after('initialize', function() {
+
+    // Track changes to the state using advice
+    this.after('stateChanged', this.update);
 
     this.bindVideoEvents();
 
@@ -37,8 +62,6 @@ function Seekbar() {
       this.trigger('seek_requested', {time: this.$node.val()});
       this.bindVideoEvents();
     });
-
-    this.$node.val(0);
   });
 }
-export default flight.component(Seekbar);
+export default flight.component(withState, Seekbar);

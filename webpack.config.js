@@ -1,6 +1,7 @@
 path = require('path');
 
-projectPath =  path.join(__dirname, '.');
+projectPath = path.join(__dirname, '.');
+bowerPath   = path.join(projectPath, 'bower_components');
 
 module.exports = {
   entry: './src/index.js',
@@ -13,8 +14,15 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     root: [
-      path.join(projectPath, 'bower_components')
-    ]
+      bowerPath
+    ],
+    alias: {
+      'mixin'     : '../mixin',
+      'with-state': path.join(
+        'flight-with-state',
+        require('./bower_components/flight-with-state/bower.json').main
+      )
+    }
   },
   module: {
     loaders:[

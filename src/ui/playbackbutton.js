@@ -1,30 +1,39 @@
 'use strict';
 
-import flight from 'flight';
+import flight    from 'flight';
+import withState from 'with-state';
 
 function PlaybackButton() {
 
-  this.showPlayIcon = function() {
-    this.$node.html('▶︎');
-  };
+  // Define an instance's `initialState`
+  this.initialState({
+    paused: true
+  });
 
-  this.showPauseIcon = function() {
-    this.$node.html('II');
+  this.update = function() {
+    this.$node.html(this.state.paused ? '▶︎' : 'II');
   };
 
   this.after('initialize', function() {
+
+    // Track changes to the state using advice
+    this.after('stateChanged', this.update);
 
     this.on('click', (e) => {
       this.trigger('toggle_playback_requested');
     });
 
     this.on('#root', 'video_play', (e) => {
-      this.showPauseIcon();
+      this.mergeState({
+        paused: false
+      });
     });
 
     this.on('#root', 'video_pause', (e) => {
-      this.showPlayIcon();
+      this.mergeState({
+        paused: true
+      });
     });
   });
 }
-export default flight.component(PlaybackButton);
+export default flight.component(withState, PlaybackButton);

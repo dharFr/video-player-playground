@@ -1,25 +1,34 @@
 'use strict';
 
-import flight from 'flight';
+import flight    from 'flight';
+import withState from 'with-state';
 
 function Video() {
 
+  // Define an instance's `initialState`
+  this.initialState({
+    paused   : true
+  });
+
+  this.isPaused = this.fromState('paused');
+  this.setPaused = this.toState('paused');
+
   this.togglePlayback = function() {
-    if (this._paused) {
+    if (this.isPaused()) {
       this.video.play();
-      this._paused = false;
+      this.setPaused(false);
     }
     else
     {
       this.video.pause();
-      this._paused = true;
+      this.setPaused(true);
     }
   };
 
   this.after('initialize', function() {
 
-    this.video   = this.$node[0];
-    this._paused = true;
+    // Track changes to the state using advice
+    // this.after('stateChanged', this.update);
 
     this.on('click', this.togglePlayback);
 
@@ -44,6 +53,7 @@ function Video() {
     this.on('#root', 'seek_requested', (e, data) => {
       this.video.currentTime = data.time;
     });
+    this.video = this.$node[0];
   });
 }
-export default flight.component(Video);
+export default flight.component(withState, Video);

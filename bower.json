@@ -13,6 +13,7 @@
     "tests"
   ],
   "dependencies": {
-    "flight": "~1.5.0"
+    "flight": "~1.5.0",
+    "flight-with-state": "~2.0.0"
   }
 }
