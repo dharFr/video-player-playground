@@ -1,7 +1,7 @@
 'use strict';
 
 import flight         from 'flight';
-import withFormatTime from 'mixin/with_format_time.js';
+import withFormatTime from 'mixin/with_format_time';
 import withState      from 'with-state';
 import {
   VIDEO_DURATION_CHANGE,

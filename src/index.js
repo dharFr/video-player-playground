@@ -1,11 +1,11 @@
 'use strict';
 
 import $              from 'jquery';
-import Video          from './ui/video.js';
-import PlaybackButton from './ui/playbackbutton.js';
-import TimeInfo       from './ui/timeinfo.js';
-import Seekbar        from './ui/seekbar.js';
-import PlaybackInfo   from './ui/playbackinfo.js';
+import Video          from './ui/video';
+import PlaybackButton from './ui/playbackbutton';
+import TimeInfo       from './ui/timeinfo';
+import Seekbar        from './ui/seekbar';
+import PlaybackInfo   from './ui/playbackinfo';
 
 // Data components
 // UI components
