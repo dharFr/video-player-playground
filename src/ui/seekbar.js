@@ -2,6 +2,11 @@
 
 import flight from 'flight';
 import withState from 'with-state';
+import {
+  SEEK_REQUESTED,
+  VIDEO_DURATION_CHANGE,
+  VIDEO_TIME_UPDATE
+} from '../events';
 
 function Seekbar() {
 
@@ -23,13 +28,13 @@ function Seekbar() {
   };
 
   this.bindVideoEvents = function() {
-    this.on('#root', 'video_duration_change', this.onDurationChange);
-    this.on('#root', 'video_time_update', this.onTimeUpdate);
+    this.on('#root', VIDEO_DURATION_CHANGE, this.onDurationChange);
+    this.on('#root', VIDEO_TIME_UPDATE, this.onTimeUpdate);
   };
 
   this.unbindVideoEvents = function() {
-    this.off('#root', 'video_duration_change', this.onDurationChange);
-    this.off('#root', 'video_time_update', this.onTimeUpdate);
+    this.off('#root', VIDEO_DURATION_CHANGE, this.onDurationChange);
+    this.off('#root', VIDEO_TIME_UPDATE, this.onTimeUpdate);
   };
 
   this.onDurationChange = function(e, data) {
@@ -59,7 +64,7 @@ function Seekbar() {
 
     // Stop drag
     this.on('mouseup', (e) => {
-      this.trigger('seek_requested', {time: this.$node.val()});
+      this.trigger(SEEK_REQUESTED, {time: this.$node.val()});
       this.bindVideoEvents();
     });
   });

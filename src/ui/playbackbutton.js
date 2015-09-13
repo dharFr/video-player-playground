@@ -2,6 +2,11 @@
 
 import flight    from 'flight';
 import withState from 'with-state';
+import {
+  TOGGLE_PLAYBACK_REQUESTED,
+  VIDEO_PAUSE,
+  VIDEO_PLAY
+} from '../events';
 
 function PlaybackButton() {
 
@@ -20,16 +25,16 @@ function PlaybackButton() {
     this.after('stateChanged', this.update);
 
     this.on('click', (e) => {
-      this.trigger('toggle_playback_requested');
+      this.trigger(TOGGLE_PLAYBACK_REQUESTED);
     });
 
-    this.on('#root', 'video_play', (e) => {
+    this.on('#root', VIDEO_PLAY, (e) => {
       this.mergeState({
         paused: false
       });
     });
 
-    this.on('#root', 'video_pause', (e) => {
+    this.on('#root', VIDEO_PAUSE, (e) => {
       this.mergeState({
         paused: true
       });

@@ -2,6 +2,14 @@
 
 import flight    from 'flight';
 import withState from 'with-state';
+import {
+  TOGGLE_PLAYBACK_REQUESTED,
+  SEEK_REQUESTED,
+  VIDEO_DURATION_CHANGE,
+  VIDEO_PAUSE,
+  VIDEO_PLAY,
+  VIDEO_TIME_UPDATE
+} from '../events';
 
 function Video() {
 
@@ -33,24 +41,24 @@ function Video() {
     this.on('click', this.togglePlayback);
 
     this.on('play', (e) => {
-      this.trigger('video_play');
+      this.trigger(VIDEO_PLAY);
     });
 
     this.on('pause', (e) => {
-      this.trigger('video_pause');
+      this.trigger(VIDEO_PAUSE);
     });
 
     this.on('durationchange', (e) => {
-      this.trigger('video_duration_change', { duration: this.video.duration });
+      this.trigger(VIDEO_DURATION_CHANGE, { duration: this.video.duration });
     });
 
     this.on('timeupdate', (e) => {
-      this.trigger('video_time_update', { time: this.video.currentTime });
+      this.trigger(VIDEO_TIME_UPDATE, { time: this.video.currentTime });
     });
 
-    this.on('#root', 'toggle_playback_requested', this.togglePlayback);
+    this.on('#root', TOGGLE_PLAYBACK_REQUESTED, this.togglePlayback);
 
-    this.on('#root', 'seek_requested', (e, data) => {
+    this.on('#root', SEEK_REQUESTED, (e, data) => {
       this.video.currentTime = data.time;
     });
     this.video = this.$node[0];
