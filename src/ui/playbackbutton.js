@@ -25,7 +25,7 @@ function PlaybackButton() {
     this.after('stateChanged', this.update);
 
     this.on('click', (e) => {
-      this.trigger(TOGGLE_PLAYBACK_REQUESTED);
+      this.trigger(TOGGLE_PLAYBACK_REQUESTED, this.state.paused);
     });
 
     this.on('#root', VIDEO_PLAY, (e) => {

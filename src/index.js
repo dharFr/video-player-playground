@@ -6,6 +6,7 @@ import PlaybackButton from './ui/playbackbutton';
 import TimeInfo       from './ui/timeinfo';
 import Seekbar        from './ui/seekbar';
 import PlaybackInfo   from './ui/playbackinfo';
+import './redux/reducers';
 
 // Data components
 // UI components

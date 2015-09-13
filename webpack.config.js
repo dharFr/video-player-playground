@@ -2,6 +2,7 @@ path = require('path');
 
 projectPath = path.join(__dirname, '.');
 bowerPath   = path.join(projectPath, 'bower_components');
+nodePath    = path.join(projectPath, 'node_modules');
 
 module.exports = {
   entry: './src/index.js',
@@ -17,7 +18,8 @@ module.exports = {
       bowerPath
     ],
     alias: {
-      'mixin'     : '../mixin',
+      'mixin'     : path.join(projectPath, 'src', 'mixin'),
+      'redux'     : path.join(nodePath, 'redux'),
       'with-state': path.join(
         'flight-with-state',
         require('./bower_components/flight-with-state/bower.json').main
