@@ -12,7 +12,7 @@ import {
   VIDEO_PAUSE,
   VIDEO_PLAY,
   VIDEO_TIME_UPDATE
-} from '../events';
+} from './events';
 
 /**
  * Action creators
@@ -29,7 +29,7 @@ export function seekRequested(time) {
   return { type: SEEK_REQUESTED, time };
 }
 
-export function togglePlayback(paused) {
+export function togglePlaybackRequested(paused) {
   return { type: TOGGLE_PLAYBACK_REQUESTED, paused};
 }
 
