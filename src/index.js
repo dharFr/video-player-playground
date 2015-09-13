@@ -6,7 +6,8 @@ import PlaybackButton from './ui/playbackbutton';
 import TimeInfo       from './ui/timeinfo';
 import Seekbar        from './ui/seekbar';
 import PlaybackInfo   from './ui/playbackinfo';
-import './reducers';
+
+import store          from './store';
 
 // Data components
 // UI components
