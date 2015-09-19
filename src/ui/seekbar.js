@@ -1,7 +1,11 @@
 'use strict';
 
-import flight from 'flight';
+import flight    from 'flight';
 import withState from 'with-state';
+import withStore from 'mixin/with_store';
+import {
+  seekRequested
+} from '../actions';
 import {
   SEEK_REQUESTED,
   VIDEO_DURATION_CHANGE,
@@ -10,11 +14,12 @@ import {
 
 function Seekbar() {
 
-  // Define an instance's `initialState`
-  this.initialState({
-    duration : 0,
-    time     : 0
-  });
+  this.shouldComponentUpdate = function(oldState, newState) {
+    return (
+      oldState.duration    !== newState.duration ||
+      oldState.currentTime !== newState.currentTime
+    );
+  };
 
   this.update = function() {
 
@@ -22,32 +27,9 @@ function Seekbar() {
       this.$node.attr('max', this.state.duration);
     }
 
-    if (this.$node.val() !== this.state.time){
-      this.$node.val(this.state.time);
+    if (this.$node.val() !== this.state.currentTime){
+      this.$node.val(this.state.currentTime);
     }
-  };
-
-  this.bindVideoEvents = function() {
-    this.on('#root', VIDEO_DURATION_CHANGE, this.onDurationChange);
-    this.on('#root', VIDEO_TIME_UPDATE, this.onTimeUpdate);
-  };
-
-  this.unbindVideoEvents = function() {
-    this.off('#root', VIDEO_DURATION_CHANGE, this.onDurationChange);
-    this.off('#root', VIDEO_TIME_UPDATE, this.onTimeUpdate);
-  };
-
-  this.onDurationChange = function(e, data) {
-    this.mergeState({
-      duration : data.duration,
-      time     : 0
-    });
-  };
-
-  this.onTimeUpdate = function(e, data) {
-    this.mergeState({
-      time     : data.time
-    });
   };
 
   this.after('initialize', function() {
@@ -55,18 +37,16 @@ function Seekbar() {
     // Track changes to the state using advice
     this.after('stateChanged', this.update);
 
-    this.bindVideoEvents();
-
     // Start drag
     this.on('mousedown', (e) => {
-      this.unbindVideoEvents();
+      this.unsubscribe();
     });
 
     // Stop drag
     this.on('mouseup', (e) => {
-      this.trigger(SEEK_REQUESTED, {time: this.$node.val()});
-      this.bindVideoEvents();
+      this.dispatch(seekRequested(this.$node.val()));
+      this.subscribe();
     });
   });
 }
-export default flight.component(withState, Seekbar);
+export default flight.component(withState, withStore, Seekbar);

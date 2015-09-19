@@ -1,7 +1,16 @@
 'use strict';
 
 import flight    from 'flight';
-import withState from 'with-state';
+import withStore from 'mixin/with_store';
+import { bindActionCreators } from 'redux';
+import * as PlayerActionCreators from '../actions';
+import {
+  togglePlaybackRequested,
+  videoPlay,
+  videoPause,
+  videoDurationChange,
+  videoTimeUpdate
+} from '../actions';
 import {
   PLAY_REQUESTED,
   PAUSE_REQUESTED,
@@ -15,71 +24,54 @@ import {
 
 function Video() {
 
-  // Define an instance's `initialState`
-  this.initialState({
-    paused   : true
-  });
-
-  this.isPaused = this.fromState('paused');
-  this.setPaused = this.toState('paused');
-
-  this._play = function() {
-    this.video.play();
-    this.setPaused(false);
+  this.shouldComponentUpdate = function(oldState, newState) {
+    return (
+      oldState.paused !== newState.paused ||
+      newState.playbackRequest !== null ||
+      newState.seekRequest !== null
+    );
   };
 
-  this._pause = function() {
-    this.video.pause();
-    this.setPaused(true);
-  };
-
-  this.play = function() {
-    if (this.isPaused()) {
-      this._play();
+  this.update = function() {
+    switch (this.state.playbackRequest) {
+      case 'play':
+        this.video.play();
+        break;
+      case 'pause':
+        this.video.pause();
+        break;
     }
-  };
 
-  this.pause = function() {
-    if (!this.isPaused()) {
-      this._pause();
+    if (this.state.seekRequest !== null) {
+      this.video.currentTime = this.state.seekRequest;
     }
-  };
-
-  this.togglePlayback = function() {
-    (this.isPaused()) ? this._play() : this._pause();
   };
 
   this.after('initialize', function() {
 
-    // Track changes to the state using advice
-    // this.after('stateChanged', this.update);
-
-    this.on('click', this.togglePlayback);
+    this.on('click', (e) => {
+      this.dispatch(togglePlaybackRequested(this.state.paused));
+    });
 
     this.on('play', (e) => {
-      this.trigger(VIDEO_PLAY);
+      this.dispatch(videoPlay());
     });
 
     this.on('pause', (e) => {
-      this.trigger(VIDEO_PAUSE);
+      this.dispatch(videoPause());
     });
 
     this.on('durationchange', (e) => {
-      this.trigger(VIDEO_DURATION_CHANGE, { duration: this.video.duration });
+      this.dispatch(videoDurationChange(this.video.duration));
     });
 
     this.on('timeupdate', (e) => {
-      this.trigger(VIDEO_TIME_UPDATE, { time: this.video.currentTime });
+      this.dispatch(videoTimeUpdate(this.video.currentTime));
     });
 
-    this.on('#root', PLAY_REQUESTED,            this.play);
-    this.on('#root', PAUSE_REQUESTED,           this.pause);
-    this.on('#root', TOGGLE_PLAYBACK_REQUESTED, this.togglePlayback);
-
-    this.on('#root', SEEK_REQUESTED, (e, data) => {
-      this.video.currentTime = data.time;
-    });
+    this.after('stateChanged', this.update);
     this.video = this.$node[0];
   });
+
 }
-export default flight.component(withState, Video);
+export default flight.component(withStore, Video);

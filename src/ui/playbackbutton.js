@@ -1,7 +1,10 @@
 'use strict';
 
 import flight    from 'flight';
-import withState from 'with-state';
+import withStore from 'mixin/with_store';
+import {
+  togglePlaybackRequested
+} from '../actions';
 import {
   TOGGLE_PLAYBACK_REQUESTED,
   VIDEO_PAUSE,
@@ -10,10 +13,9 @@ import {
 
 function PlaybackButton() {
 
-  // Define an instance's `initialState`
-  this.initialState({
-    paused: true
-  });
+  this.shouldComponentUpdate = function(oldState, newState) {
+    return oldState.paused !== newState.paused;
+  };
 
   this.update = function() {
     this.$node.html(this.state.paused ? '▶︎' : 'II');
@@ -25,20 +27,8 @@ function PlaybackButton() {
     this.after('stateChanged', this.update);
 
     this.on('click', (e) => {
-      this.trigger(TOGGLE_PLAYBACK_REQUESTED, this.state.paused);
-    });
-
-    this.on('#root', VIDEO_PLAY, (e) => {
-      this.mergeState({
-        paused: false
-      });
-    });
-
-    this.on('#root', VIDEO_PAUSE, (e) => {
-      this.mergeState({
-        paused: true
-      });
+      this.dispatch(togglePlaybackRequested(this.state.paused));
     });
   });
 }
-export default flight.component(withState, PlaybackButton);
+export default flight.component(withStore, PlaybackButton);
