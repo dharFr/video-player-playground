@@ -2,6 +2,7 @@
 
 import flight    from 'flight';
 import withStore from 'mixin/with_store';
+import withFlightCompat from 'mixin/with_flight_compat';
 import { bindActionCreators } from 'redux';
 import * as PlayerActionCreators from '../actions';
 import {
@@ -74,4 +75,4 @@ function Video() {
   });
 
 }
-export default flight.component(withStore, Video);
+export default flight.component(withStore, withFlightCompat, Video);

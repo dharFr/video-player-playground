@@ -30,7 +30,7 @@ export function seekRequested(time) {
 }
 
 export function togglePlaybackRequested(paused) {
-  return { type: TOGGLE_PLAYBACK_REQUESTED, paused};
+  return { type: TOGGLE_PLAYBACK_REQUESTED, paused };
 }
 
 export function videoDurationChange(duration) {
