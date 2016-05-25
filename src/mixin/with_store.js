@@ -1,27 +1,26 @@
 'use strict';
 
+let store;
+
 function withStore() {
   /*jshint validthis: true */
 
-  this.attributes({
-    store: null
-  });
   this._unsubscribe = null;
   this.state = null;
 
   this.dispatch = function(action) {
-    this.attr.store.dispatch(action);
+    store.dispatch(action);
   };
 
   this.getState = function() {
-    this.attr.store.getState();
+    store.getState();
   };
 
   this.subscribe = function() {
 
-    this.unsubscribe = this.attr.store.subscribe(() => {
+    this.unsubscribe = store.subscribe(() => {
       let oldState = this.state;
-      this.state = this.attr.store.getState();
+      this.state = store.getState();
       if (this.shouldComponentUpdate(oldState, this.state)) {
         this.stateChanged();
       }
@@ -34,10 +33,18 @@ function withStore() {
 
   this.after('initialize', function() {
 
-    this.subscribe();
+    if (store == null && this.attr.store == null) {
+      throw new Error('Redux store is not defined');
+    }
+    else if (store == null && this.attr.store) {
+      store = this.attr.store;
+    }
+    else {
+      this.subscribe();
 
-    this.state = this.attr.store.getState();
-    this.stateChanged();
+      this.state = store.getState();
+      this.stateChanged();
+    }
   });
 
   this.before('teardown', function() {

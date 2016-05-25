@@ -2,6 +2,7 @@
 
 import $              from 'jquery';
 import logger         from './middleware/logger';
+import AppStore       from './appstore';
 import Video          from './ui/video';
 import PlaybackButton from './ui/playbackbutton';
 import TimeInfo       from './ui/timeinfo';
@@ -14,15 +15,17 @@ import playerApp from './reducers';
 
 // applyMiddleware takes createStore() and returns
 // a function with a compatible API.
-let createStoreWithMiddleware = applyMiddleware(logger)(createStore);
+const createStoreWithMiddleware = applyMiddleware(logger)(createStore);
 
 // Use it like you would use createStore()
-let store = createStoreWithMiddleware(playerApp);
+const store = createStoreWithMiddleware(playerApp);
 
 // Data components
+AppStore.attachTo(document, {store});
+
 // UI components
-PlaybackButton.attachTo('#playback-btn', {store});
-TimeInfo.attachTo('#timeinfo', {store});
-Seekbar.attachTo('#seekbar', {store});
-PlaybackInfo.attachTo('#info', {store});
-Video.attachTo('#video', {store});
+PlaybackButton.attachTo('#playback-btn');
+TimeInfo.attachTo('#timeinfo');
+Seekbar.attachTo('#seekbar');
+PlaybackInfo.attachTo('#info');
+Video.attachTo('#video');
