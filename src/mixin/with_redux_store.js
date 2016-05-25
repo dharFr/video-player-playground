@@ -2,7 +2,7 @@
 
 let store;
 
-function withStore() {
+function withReduxStore() {
   /*jshint validthis: true */
 
   this._unsubscribe = null;
@@ -18,10 +18,10 @@ function withStore() {
 
   this.subscribe = function() {
 
-    this.unsubscribe = store.subscribe(() => {
+    this.unsubscribe = store.subscribe((state) => {
       let oldState = this.state;
-      this.state = store.getState();
-      if (this.shouldComponentUpdate(oldState, this.state)) {
+      this.state = state || store.getState();
+      if (oldState == null || this.shouldComponentUpdate(oldState, this.state)) {
         this.stateChanged();
       }
     });
@@ -42,8 +42,10 @@ function withStore() {
     else {
       this.subscribe();
 
-      this.state = store.getState();
-      this.stateChanged();
+      if (typeof store.getState == 'function') {
+        this.state = store.getState();
+        this.stateChanged();
+      }
     }
   });
 
@@ -52,4 +54,4 @@ function withStore() {
   });
 }
 // return the mixin function
-export default withStore;
+export default withReduxStore;

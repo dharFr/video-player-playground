@@ -2,7 +2,7 @@
 
 import flight         from 'flight';
 import withFormatTime from 'mixin/with_format_time';
-import withStore      from 'mixin/with_store';
+import withStore      from 'mixin/with_redux_store';
 import {
   VIDEO_DURATION_CHANGE,
   VIDEO_TIME_UPDATE

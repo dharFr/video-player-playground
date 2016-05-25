@@ -1,7 +1,7 @@
 'use strict';
 
 import flight    from 'flight';
-import withStore from 'mixin/with_store';
+import withStore from 'mixin/with_redux_store';
 import {
   togglePlaybackRequested
 } from '../actions';

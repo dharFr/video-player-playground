@@ -12,7 +12,7 @@ module.exports = {
     sourceMapFilename: "[file].map?[hash]"
   },
   debug: true,
-  devtool: 'source-map',
+  devtool: '#source-map',
   resolve: {
     root: [
       bowerPath
@@ -26,6 +26,9 @@ module.exports = {
       )
     }
   },
+  modulesDirectories: [
+    'node_modules'
+  ],
   module: {
     loaders:[
       // Babel loader

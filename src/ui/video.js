@@ -1,7 +1,7 @@
 'use strict';
 
 import flight    from 'flight';
-import withStore from 'mixin/with_store';
+import withStore from 'mixin/with_redux_store';
 import withFlightCompat from 'mixin/with_flight_compat';
 import { bindActionCreators } from 'redux';
 import * as PlayerActionCreators from '../actions';

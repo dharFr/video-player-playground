@@ -1,7 +1,7 @@
 'use strict';
 
 import { createStore } from 'redux';
-import playerApp from './reducers';
+import playerApp from '../reducers';
 import {
   pauseRequested,
   playRequested,
@@ -11,17 +11,17 @@ import {
   videoPause,
   videoPlay,
   videoTimeUpdate
-} from './actions';
+} from '../actions';
 
 let store = createStore(playerApp);
 // let store = createStore(playerApp, window.STATE_FROM_SERVER);
 
 // Log the initial state
-console.log(store.getState());
+console.log('Redux State changed:', store.getState());
 
 // Every time the state changes, log it
 let unsubscribe = store.subscribe(() =>{
-  console.log(store.getState());
+  console.log('Redux State changed:', store.getState());
 });
 
 store.dispatch(videoDurationChange(25));

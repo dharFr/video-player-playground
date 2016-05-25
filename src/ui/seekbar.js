@@ -2,7 +2,7 @@
 
 import flight    from 'flight';
 import withState from 'with-state';
-import withStore from 'mixin/with_store';
+import withStore from 'mixin/with_redux_store';
 import {
   seekRequested
 } from '../actions';

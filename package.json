@@ -15,7 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "rx": "^4.1.0"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",
